@@ -39,9 +39,9 @@ def mail_new_bill(DB_LOCATION, new_bill, page):
     """
     port = 465  # For SSL
     smtp_server = "smtp.gmail.com"
-    sender_email = "billsofghana@gmail.com"  # Enter your address
-    receiver_email = " " # Enter receiver address
-    password = "Bills@ghana123"
+    sender_email = ""  # Enter your address
+    receiver_email = "" # Enter receiver address
+    password = ""
 
     c = DB_LOCATION.cursor()
     c.execute("SELECT * FROM subscribers")
