@@ -1,8 +1,8 @@
 **/__pycache__/
 sqlite/
 **.DS_Store
-.db
+*.db
 database.py
-.pyc
+*.pyc
 venv/
 PDFScraper/
