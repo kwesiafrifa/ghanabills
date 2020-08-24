@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet"  href="../css/index.css">
+    <link rel="stylesheet" href="../css/bills.css">
+    <script type="module" src="../js/subscribe.js"></script>
+    <title>Bills Page</title>
+
+</head>
+<body>
+<script>
+     const SEARCHABLE_FIELDS = [
+         "title",
+         "author",
+         "date"
+     ]
+
+    function requestData(url, onResponse) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(`GET`, url, true);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== 4) return;
+            if (xhr.status !== 200) onResponse(null);
+            else onResponse(xhr.responseText);
+        };
+        xhr.send();
+}
+
+
+    function createBillRow(data) {
+        const pane = document.querySelector(`.billRow>template`).content
+        .cloneNode(true).querySelector(`.pane`);
+
+        pane.querySelector(`.title`).innerHTML = data.bill_name;
+        pane.querySelector(`.title`).href = data.bill_pdf_link;
+        pane.querySelector('.twitter-hashtag-button').href = data.bill_tweet
+        pane.querySelector('.twitter-hashtag-button').innerHTML = "Tweet"
+
+        if (data.bill_writer === "Unknown author"){
+
+        }
+        else{
+            pane.querySelector(`.author`).innerHTML = data.bill_writer;
+        }
+        pane.querySelector(`.date`).innerHTML = data.bill_date;
+
+        pane.querySelector(`.link`).href = data.bill_link;
+        pane.querySelector(`.link1`).href = data.bill_link1;
+
+        return pane;
+
+    }
+    function resetSearchableFields(pane) {
+        SEARCHABLE_FIELDS.forEach((fieldName) => {
+        const field = pane.querySelector(`.${fieldName}`);
+        field.origHTML = field.innerHTML
+        field.innerHTML = field.origHTML;
+    });
+}
+    function curryHandleSearchInput(data) {
+      return () => {
+        const search = document.querySelector(`.search`);
+        const text = search.value
+
+        // hide all elements which don't match
+        searchText(data, search, text, SEARCHABLE_FIELDS)
+      };
+    }
+    function initHeaderFilterSearch(data) {
+        // search bar and its handler
+        document.querySelector(`.search`).addEventListener(`input`, curryHandleSearchInput(data));
+    }
+
+    function initViewer(data) {
+        // create all the elements for the bills
+      const viewer = document.querySelector(`.billRow`);
+      for (let a = 0; a < data.length; a++) {
+        const pane = createBillRow(data[a]);
+        pane.classList.add(`pane-${a}`);
+        viewer.appendChild(pane);
+      }
+    }
+
+    const clickNameHandler = (evs) => {
+         const search =  document.querySelector('.search')
+        search.value = evs.innerHTML;
+         const text = search.value
+
+         requestData(`/data.json`, (responseText) => {
+             searchText(JSON.parse(responseText), search, text, SEARCHABLE_FIELDS)
+        })
+
+    }
+
+
+    function searchText(data, search, text, SEARCHABLE_FIELDS) {
+        for (let a = 0; a < data.length; a++) {
+          // setTimeout for async and faster search
+          setTimeout(() => {
+            // only keep on processing if the current text is the same as the search bar still, which might not be the case if they type too fast
+            if (text != search.value) {
+              return;
+            }
+            const pane = document.querySelector(`.pane-${a}`);
+            // whenever hidden is removed, we'll also unhighlight the text, so it should be okay
+            if (text.length == 0) {
+                for (let a = 0; a < data.length; a++) {
+                    const pane_ =  document.querySelector(`.pane-${a}`)
+                    pane_.classList.remove(`hidden-by-search`);
+                    resetSearchableFields(pane);
+            }} else {
+              const reg = new RegExp(`(` + text.replace(
+                  /[\[\]\\{}()+*?.$^|]/g,
+                  function(match) {
+                    return '\\' + match;
+                  }) +
+                `)`, `gi`);
+              let show = false;
+              SEARCHABLE_FIELDS.forEach(fieldName =>
+                show |= reg.test(pane.querySelector(`.${fieldName}`).textContent));
+              if (!show) pane.classList.add(`hidden-by-search`);
+              else {
+                pane.classList.remove(`hidden-by-search`);
+
+              }
+            }
+          }, 0);
+        }
+
+
+
+    }
+
+    function buttonFilter(data) {
+        const selectedYears = document.querySelectorAll(`.year:disabled`);
+        const showingYears = []
+
+        if (selectedYears.length === 0){
+            return
+        }
+
+         selectedYears.forEach(yearNode =>
+            showingYears.push(yearNode.value));
+
+        if (showingYears.length === 0) {
+            document.querySelector(`.pane`).classList.add(`no-display`);
+        } else {
+            document.querySelector(`.pane`).classList.remove(`no-display`);
+          }
+
+            for (let a = 0; a < data.length; a++) {
+                 const pane = document.querySelector(`.pane-${a}`);
+                 let show = showingYears.length === 0;
+                 if (!show) {
+                     show |= showingYears.includes(String(data[a].bill_year));
+                }
+                if (!show) {
+                    pane.classList.add(`hidden-by-year`);
+                } else {
+                    pane.classList.remove(`hidden-by-year`);
+    }
+            }
+
+         }
+         function initHeaderFilterTerm(data) {
+        // term filters
+            document.querySelectorAll(`.dropdown-item`).forEach((yearNode) => {
+                yearNode.addEventListener(`click`, () => {
+                     $(yearNode).prop("disabled", true);
+                     buttonFilter(data)
+
+    });
+  });
+}
+
+function handleLoadData(data){
+          document.querySelectorAll(`.pane`).forEach((bill) => {
+             if (! bill.classList.contains("pane")) {
+                bill.classList.add('pane')
+         }})
+
+         var paras = document.getElementsByClassName('pane');
+
+
+        while(paras[0]) {
+            paras[0].parentNode.removeChild(paras[0]);
+        }
+        initViewer(data)
+        initHeaderFilterSearch(data);
+        initHeaderFilterTerm(data)
+        for(let a = 0; a < data.length; a++){
+                let str = "{{url_for('forum', bill='placeholder')}}"
+                str = str.replace('placeholder', data[a].bill_name)
+            document.querySelector(`.pane-${a}`).querySelector('.submission').querySelector("a").setAttribute("href", str)
+
+        }
+
+}
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+        requestData(`/data.json`, (responseText) => {
+            handleLoadData(JSON.parse(responseText))
+        })
+
+    });
+
+
+    $(document).ready(function() {
+
+
+        $('#undo').click(function () {
+            if ($('#2020').prop('disabled', true)) {
+                $('#2020').removeAttr("disabled")
+
+            }
+            if ($('#2019').prop('disabled', true)) {
+                $('#2019').removeAttr("disabled")
+
+            }
+            if ($('#2018').prop('disabled', true)) {
+                $('#2018').removeAttr("disabled")
+
+            }
+            if ($('#2017').prop('disabled', true)) {
+                $('#2017').removeAttr("disabled")
+
+            }
+            if ($('#2016').prop('disabled', true)) {
+                $('#2016').removeAttr("disabled")
+
+            }
+
+            if ($('#2015').prop('disabled', true)) {
+                $('#2015').removeAttr("disabled")
+
+            }
+            if ($('#2014').prop('disabled', true)) {
+                $('#2014').removeAttr("disabled")
+
+            }
+            if ($('#2013').prop('disabled', true)) {
+                $('#2013').removeAttr("disabled")
+            }
+
+            if ($('#btn-sort').prop('disabled')) {
+                requestData(`/news_hits.json`, (responseText) => {
+                    handleLoadData(JSON.parse(responseText))
+            })
+            }
+            else{
+                requestData(`/data.json`, (responseText) => {
+                    handleLoadData(JSON.parse(responseText))
+            })
+            }
+
+        })
+        $('#btn-sort').click(function () {
+            $('#btn-sort').prop("disabled", true);
+                requestData(`/news_hits.json`, (responseText) => {
+                    handleLoadData(JSON.parse(responseText));
+                    buttonFilter(JSON.parse(responseText))
+
+})
+        })
+
+        $('#undo-order').click(function () {
+                if ($('#btn-sort').prop('disabled')) {
+                    $('#btn-sort').removeAttr("disabled")
+                }
+                requestData(`/data.json`, (responseText) => {
+                    handleLoadData(JSON.parse(responseText))
+                    buttonFilter(JSON.parse(responseText))
+        })
+        })
+    })
+
+</script>
+ <main>
+     <div class="container">
+    <nav class="navbar fixed-top navbar-expand-sm navbar-dark" style="background-color: white">
+      <a class="navbar-brand" href="/" style="color: darkgoldenrod">ghanabills</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('bills') }}" style="color: darkgoldenrod">Search Bills <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('about') }}" style="color: darkgoldenrod">About</a>
+          </li>
+        </ul>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item ">
+                <a href="https://twitter.com/ghanabills?ref_src=twsrc%5Etfw" class="nav-link twitter-follow-button" data-show-count="false">Follow @ghanabills</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </li>
+        </ul>
+        <form class="subscribe form-row my-2 my-lg-0" style="padding-left: 10px">
+        <input class="form-control-sm mr-sm-2" type="search" placeholder="Type your email here." aria-label="Search">
+        <button type="submit" class="btn-sm btn-primary mb-2">Subscribe<span class="d">d</span></button>
+    </form>
+      </div>
+
+    </nav>
+    </div>
+        <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">Bills</h1>
+          <p class="lead text-muted">Access bills organized by topic, date tabled and writer.</p>
+          <p>
+            <a href="#bills" class="btn btn-primary my-2">Explore</a>
+              <a href="/" class="btn btn-secondary my-2" >Back to Home</a>
+          </p>
+        </div>
+      </section>
+     <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-xs-8 col-xs-offset-2">
+		    <div class="input-group" style="padding-bottom: 20px">
+                <div class="input-group-btn search-panel">
+                    <button type="button" class="btn btn-default dropdown-toggle" style="color: crimson" data-toggle="dropdown">
+                    	<span id="search_concept">Order by</span> <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                     <!-- <a class="dropdown-item" type="button">Date</a> -->
+                        <button id="btn-sort" class="dropdown-item" type="button">Number of news hits</button>
+                        <a class="dropdown-item" id = "undo-order" style="color: blue" >Reset</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-default dropdown-toggle" style="color: gold" data-toggle="dropdown">
+                    	Filter by <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu" >
+                          <h5 class="dropdown-header"> Year </h5>
+                        <button class="dropdown-item year" id = "2020" type="button" value="2020" >2020</button>
+                        <button class="dropdown-item year" id = "2019" type="button" value="2019"  >2019</button>
+                        <button class="dropdown-item year" id = "2018" type="button" value="2018" >2018</button>
+                        <button class="dropdown-item year" id = "2017" type="button" value="2017"  >2017</button>
+                        <button class="dropdown-item year" id = "2016" type="button" value="2016"  >2016</button>
+                        <button class="dropdown-item year" id = "2015" type="button" value="2015"  >2015</button>
+                        <button class="dropdown-item year" id = "2014" type="button" value="2014"  >2014</button>
+                        <button class="dropdown-item year" id = "2013" type="button" value="2013"  >2013</button>
+                        <a class="dropdown-item" id = "undo" style="color: blue" >Reset</a>
+                    </div>
+                </div>
+
+                <input type="hidden" name="search_param" value="all" id="search_param">
+                <input type="text" class="search form-control" style="width:375px" name="x" placeholder="Search for bill name, year or writer.">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+            </div>
+        </div>
+	</div>
+</div>
+     <section id="bills">
+         <div id="billList" class=" billRow row justify-content-center">
+             <template class="temp">
+
+                <div class="pane col-auto" style="width: 65%">
+                    <div>
+                        <table style="width:100%; height:100%;" class="billItemTable table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <h5><a class="title" type="" style="color: black" target="_blank" href="#">Bill Name</a></h5>
+
+                                        <div class="writer">
+                                            <a class="author" onclick="clickNameHandler(this)" ></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <tr>
+                                <td colspan="99" style="vertical-align: bottom; float: right;">
+                                    <div class="tags-container"></div>
+                                    <a href="https://twitter.com/intent/tweet?button_hashtag=ICAGBill&ref_src=twsrc%5Etfw" class="twitter-hashtag-button" data-show-count="false">Tweet #ICAGBill</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                    <div class="bill-details">
+                                        <div class="bill-property property_year">
+                                            <div class="property_label">Date: </div>
+                                            <div class="property_value date"> 2016</div>
+                                        </div>
+                                        <div class="bill-property property_year">
+                                            <div class="property_label">Links to News:</div>
+                                            <div class="property_value"><a class="link"  target="_blank" href="">Joy FM</a></div>
+                                            <div class="property_value"><a class="link1" target="_blank" href="">Citi FM</a></div>
+                                        </div>
+                                        <div class="bill-property">
+                                            <div class="property_label submission" style="color: crimson; font-size: 12pt"><a style="color: crimson" href="" > Discuss Bill</a></div>
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+                 <div class="row top-buffer"></div>
+
+            </template>
+         </div>
+     </section>
+
+
+
+
+
+</body>
+</html>

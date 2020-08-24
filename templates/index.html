@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/index.css">
+    <title>ghanabills | A Home for Ghana's Bills</title>
+
+    <script type="module" src="../js/subscribe.js"></script>
+
+</head>
+<body>
+
+    <main>
+        <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">ghanabills</h1>
+          <p class="lead text-muted">For the storage, dissemination and discussion of the nation's bills of parliament.</p>
+          <p>
+            <a href="{{ url_for('bills') }}" class="btn btn-primary my-2">Explore Bills</a>
+            <a href="#news-info" class="btn btn-secondary my-2" >In the News</a>
+          </p>
+        </div>
+      </section>
+
+        <div class="album py-5 bg-light" id="news-info">
+        <div class="container">
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=News" alt="News Photo [100%x225]" style="height: 225px; width: 100%; display: block;" src="../img/card-img-2.jpg" data-holder-rendered="true">
+                <div class="card-body">
+                    <h5 class="card-title" style="padding-bottom: 10px">‘If we become an authority, we’ll bite’ – Road Safety Commission boss. </h5>
+                    <b> <a href="https://www.parliament.gh/epanel/docs/bills/National%20Road%20Safety%20Bill.pdf#viewer.action=download" target="_blank" class=" my-2" style="color: crimson; padding-right: 15px; font-size: 16px">View Bill</a> </b>
+                    <b><a href="https://www.myjoyonline.com/news/if-we-become-an-authority-well-bite-road-safety-commission-boss/" class="" target="_blank" style="color: gold;  display: inline-block;  font-size: 16px">News Article</a> </b>
+                  <div class="d-flex justify-content-between align-items-center">
+                  </div>
+                </div>
+              </div>
+            </div>
+           <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=News" alt="News Photo [100%x225]" style="height: 225px; width: 100%; max-width: 100%; display: block;" src="../img/card-img-1.jpg" data-holder-rendered="true">
+                <div class="card-body">
+                    <h5 class="card-title" style="padding-bottom: 10px">Revised RTI Bill approved, forwarded to Parliament – Bawumia. </h5>
+                    <b> <a href="https://www.parliament.gh/epanel/docs/bills/RTI%20%20Bill,%202018.PDF#viewer.action=download" class=" my-2" target="_blank" style="color: crimson; padding-right: 15px; font-size: 16px">View Bill</a> </b>
+                    <b><a href="http://citifmonline.com/2018/03/revised-rti-bill-approved-forwarded-to-parliament-bawumia/" class="" target="_blank" style="color: gold; display: inline-block;  font-size: 16px">News Article</a> </b>
+                  <div class="d-flex justify-content-between align-items-center">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+              <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=News" alt="News Photo [100%x225]" style="height: 225px; width: 100%; display: block;" src="../img/card-img.jpg" data-holder-rendered="true">
+                <div class="card-body">
+                    <h5 class="card-title" style="padding-bottom: 10px">Parliament passes Chartered Institute of Marketing, Ghana Bill, 2019. </h5>
+                 <b> <a href="https://www.parliament.gh/epanel/docs/bills/Chartered%20Inst(1).%20of%20Marketing%20Bill,%202019.pdf#viewer.action=download" target="_blank" class=" my-2" style="color: crimson; padding-right: 15px; font-size: 16px">View Bill</a></b>
+                    <b><a href="https://www.myjoyonline.com/business/economy/parliament-passes-chartered-institute-of-marketing-ghana-bill-2019/" class="" target="_blank" style="color: gold; display: inline-block;  font-size: 16px;">News Article</a></b>
+                  <div class="d-flex justify-content-between align-items-center">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+        </div>
+            </div>
+             </div>
+    <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark" style="background-color: white">
+      <a class="navbar-brand" href="#" style="color: darkgoldenrod">ghanabills</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('bills') }}" style="color: darkgoldenrod">Search Bills <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('about') }}" style="color: darkgoldenrod">About</a>
+          </li>
+            </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item ">
+                <a href="https://twitter.com/ghanabills?ref_src=twsrc%5Etfw" class="nav-link twitter-follow-button" data-show-count="false">Follow @ghanabills</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </li>
+
+        </ul>
+          <form class="subscribe form-row my-2 my-lg-0" style="padding-left: 10px">
+        <input class="form-control-sm mr-sm-2" type="search" name="email" placeholder="Type your email here." aria-label="Search">
+        <button type="submit" class="btn-sm btn-primary mb-2" style=".btn-primary.disabled, .btn-primary:disabled {color: #fff;background-color: crimson !important;border-color: crimson !important;}">Subscribe<span class="d">d</span></button>
+    </form>
+      </div>
+    </nav>
+
+    </main>
+</body>
+</html>
+
+

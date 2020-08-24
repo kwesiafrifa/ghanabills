@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/about.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <script type="module" src="../js/subscribe.js"></script>
+
+    <title>ghanabills | About </title>
+</head>
+<body >
+<main>
+    <div class="container">
+    <nav class="navbar fixed-top navbar-expand-sm navbar-dark" style="background-color: white">
+      <a class="navbar-brand" href="/" style="color: darkgoldenrod">ghanabills</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('bills') }}" style="color: darkgoldenrod">Search Bills <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('about') }}" style="color: darkgoldenrod">About</a>
+          </li>
+        </ul>
+          <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item ">
+                <a href="https://twitter.com/ghanabills?ref_src=twsrc%5Etfw" class="nav-link twitter-follow-button" data-show-count="false">Follow @ghanabills</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </li>
+        </ul>
+        <form class="subscribe form-row my-2 my-lg-0" style="padding-left: 10px">
+        <input class="form-control-sm mr-sm-2" type="search" placeholder="Type your email here." aria-label="Search">
+        <button type="submit" class="btn-sm btn-primary mb-2">Subscribe</button>
+    </form>
+      </div>
+
+    </nav>
+    </div>
+<div id="wrapper" class="col-6 container about">
+    <div class="main-content">
+        <img class="me-image rounded float-left" src="../img/me.jpg" alt="News Photo [100%x225]" data-holder-rendered="true">
+            <div class="main-content-text"><h1 style="color: crimson"> About </h1>
+            <p style="font-size: 1.2em;">Hi! My name is <a href="https://linkedin.com/in/kwesi-afrifa">Kwesi Afrifa</a>, and I'm an 18 year old freshman at <a href="http://web.mit.edu">MIT</a>
+            studying <a href="http://catalog.mit.edu/interdisciplinary/undergraduate-programs/degrees/urban-science-planning-computer-science/">Computer and Urban Science</a>. I made this website to provide easy, unfiltered access to the nation's
+            bills of parliament and to encourage informed discussion and debate surrounding policy in Ghana. Hope you enjoy!</p>
+            <p style="font-size: 1.0em">This is a beta version, so feel free to send feedback, questions or suggestions for new features to my <a href="mailto:kwesi@mit.edu?subject=Feedback on ghanabills website">email address</a>.
+                            <p style="font-size: 1.0em">Connect with me on <a href="https://linkedin.com/in/kwesi-afrifa">LinkedIn</a>, <a href="https://twitter.com/kwesiafrifa?lang=en">Twitter</a>, or <a href="https://www.instagram.com/kwesiafrifa/?hl=en">Instagram</a>. Alternatively, view my other projects <a href="http://github.com/kwesiafrifa"> here.</a></p>
+                           <p>All bills scraped from <a href="http://parliament.gh">parliament.gh</a>.</p>
+        </div>
+
+    </div>
+</div>
+
+
+    <div class="card-group" style="padding-top: 30px">
+    <div class="container">
+    <div class="row card-columns custom-columns">
+        <div class="col-md-4">
+        <div class="card text-white mb-3" style="max-width: 22rem; background-color: slategray">
+        <div class="card-header pane-header"><b>Updates, (v0.5) (25/07): </b></div>
+        <div class="card-body">
+                <p class="pane-body">1. Added ordering of bills by number of news hits.</p>
+
+                <p class="pane-body">2. Added in bills from 2010, 2013, and 2014.</p>
+
+                <p class="pane-body">3. Optimized for mobile viewing</p>
+
+                <p class="pane-body">4. Tweet bill hashtag from within bill pane.</p>
+  </div>
+        </div>
+        </div>
+            <div class="col-md-4">
+        <div class="card text-white mb-3" style="max-width: 22rem; background-color: slategray">
+        <div class="card-header pane-header"><b>Upcoming features (v0.6): </b></div>
+        <div class="card-body">
+
+                <p class="pane-body">1. Adding in titles for bills without them.</p>
+
+                <p class="pane-body">2. Adding in a "subscribe" button.</p>
+
+             <p class="pane-body">3. Adding in bill topic tags.</p>
+
+             <p class="pane-body">4. Swap "Filter by" and "Order by"</p>
+
+  </div>
+</div>
+    </div>
+        <div class="col-md-4">
+        <div class="card text-white mb-3 variable-center" style="max-width: 22rem;background-color: slategray">
+        <div class="card-header pane-header"><b> Report issues!</b></div>
+        <div class="card-body">
+                <form  method="post">
+            <div class="form-group">
+                 <label for="exampleFormControlTextarea1">Please give a brief description of the issue.</label>
+                <textarea name="body" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+         </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+
+        </div>
+        </div>
+        </div>
+    </div>
+</body>
+</html>
