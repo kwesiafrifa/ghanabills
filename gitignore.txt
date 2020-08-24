@@ -1,8 +1,0 @@
-**/__pycache__/
-sqlite/
-**.DS_Store
-**.db
-**database.py
-**.pyc
-venv/
-PDFScraper/

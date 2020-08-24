@@ -6,3 +6,5 @@ database.py
 *.pyc
 venv/
 PDFScraper/
+.idea/
+gitignore.txt
