@@ -3,9 +3,14 @@
 import re
 import datetime
 from datetime import datetime
-# Returns bill name in search term form. i.e: "Public Universities Bill" to "public+universities+bill"
-def billToSearchTerm(word):
-    word_list = re.sub("[^\w]", " ", word).split()
+
+def billToSearchTerm(bill_name):
+    """
+    converts bill name to internet search term, i.e: ghana bills to ghana+bills
+    :param bill_name: str
+    :return: str
+    """
+    word_list = re.sub("[^\w]", " ", bill_name).split()
     # Above line taken from https://stackoverflow.com/questions/6181763/converting-a-string-to-a-list-of-words
 
     if len(word_list) >= 6:
@@ -27,6 +32,11 @@ def justBillName(bill_name):
 
 
 def try_parsing_date(text):
+    """
+    formats input date; tries several different date formats.
+    :param text: scraped date
+    :return: formatted date
+    """
     for fmt in ('%Y-%m-%d','%Y-%m', '%Y'):
         try:
             return datetime.strptime(text, fmt)
@@ -36,6 +46,11 @@ def try_parsing_date(text):
 
 
 def removeExtras(bill_name):
+    """
+    removes extra text in bill names, i.e: "Pdf" or "2020" for creating hashtags
+    :param bill_name: str
+    :return: list
+    """
     years = ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "201"]
     forbidden_words = ["and", "or", "And", "Or", "AND", "OR"]
     word_list = re.sub("[^\w]", " ", bill_name).split()
@@ -51,6 +66,11 @@ def removeExtras(bill_name):
     return word_list
 
 def createHashtag(bill_name):
+    """
+    creates hashtag from bill name
+    :param bill_name: str
+    :return: str
+    """
     hashtag = ""
     word_list = removeExtras(bill_name)
 
@@ -69,6 +89,11 @@ def createHashtag(bill_name):
 
 
 def mail_validate(email):
+    """
+    mail validation code, regex taken from:
+    :param email: text
+    :return: bool
+    """
     if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
         return False
     else:
