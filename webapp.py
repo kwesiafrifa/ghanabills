@@ -33,7 +33,7 @@ def run_webapp(DB_LOCATION, webapp_context):
     @webapp.route("/about", methods=["POST", "GET"])
     def about():
         if request.method == 'POST':
-            body = request.form.get('body')  # access the data inside
+            body = request.form.get('body')  # Access the data inside the text box
             name = request.form.get('name')
             mail_issue(name, body)
 
@@ -86,7 +86,6 @@ def run_webapp(DB_LOCATION, webapp_context):
         DB_LOCATION.close()
         response = ("Unsubscribed " if in_subscribers else "Subscribed ") \
                    + email + "."
-        #print_with_datetime(response)
         return flask.Response(response, mimetype="text/html")
 
 

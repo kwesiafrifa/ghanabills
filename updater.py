@@ -206,6 +206,9 @@ def dataUpdate(DB_LOCATION):
 
 # inputNewBills(PAGES, DB_LOCATION)
 def startUpdater(DB_LOCATION, PAGES, webapp_context):
+    """
+    Scrapes the parliament.gh website and pushes new data to the JSON location.
+    """
     def update(webapp_context):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)

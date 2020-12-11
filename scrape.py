@@ -1,4 +1,7 @@
 # Kwesi Afrifa, Jun-Jul 2020, kwesi@mit.edu
+
+# This code was the initial scraper for populating the database. It has been archived.
+
 from bs4 import BeautifulSoup
 from datetime import datetime
 
