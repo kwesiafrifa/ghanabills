@@ -3,7 +3,6 @@ import asyncio
 import smtplib
 import ssl
 import json
-import email
 import threading
 import traceback
 
@@ -16,12 +15,13 @@ from email.mime.multipart import MIMEMultipart
 PAGES = ['https://www.parliament.gh/docs?type=Bills&OT&P',
          'https://www.parliament.gh/docs?type=Bills&OT&P=14',
          'https://www.parliament.gh/docs?type=Bills&OT&P=28',
-         'https://www.parliament.gh/docs?type=Bills&OT&P=3c']
+         'https://www.parliament.gh/docs?type=Bills&OT&P=3c',
+         'https://www.parliament.gh/docs?type=Bills&OT&P=50'
+         ]
 
-PAGES_IR = ['http://ir.parliament.gh/handle/123456789/283/browse?order=ASC&rpp=20&sort_by=2&etal=-1&offset=0&type=dateissued',
-            'http://ir.parliament.gh/handle/123456789/283/browse?order=ASC&rpp=20&sort_by=2&etal=-1&offset=20&type=dateissued',
-            'http://ir.parliament.gh/handle/123456789/283/browse?order=ASC&rpp=20&sort_by=2&etal=-1&offset=40&type=dateissued',
-            'http://ir.parliament.gh/handle/123456789/283/browse?order=ASC&rpp=20&sort_by=2&etal=-1&offset=60&type=dateissued']
+DUPLICATE_BILLS = ["Intestate Sucession Bill, 2018", "Accountants", "Complementary Education Agency Bill, 2019",
+                   "Conduct of Public Officers BILL, 2018", "Industrial Designs(Amendment) Bill, 2020",
+                   "Real Estate Agency Authority Bill, 2020"]
 
 
 try:
@@ -39,7 +39,7 @@ def mail_new_bill(DB_LOCATION, new_bill, page):
     """
     port = 465  # For SSL
     smtp_server = "smtp.gmail.com"
-    sender_email = ""  # Enter your address
+    sender_email = "billsofghana@gmail.com"  # Enter your address
     receiver_email = "" # Enter receiver address
     password = ""
 
@@ -69,10 +69,6 @@ def mail_new_bill(DB_LOCATION, new_bill, page):
             server.login(sender_email, password)
             server.sendmail(sender_email, receiver_email, message.as_string())
 
-    print_with_datetime("Emailed " + str(len(subscribers)) + " subscribers.")
-
-
-
 
 def mail_issue(name, body):
     """
@@ -101,6 +97,7 @@ def inputNewBills(PAGES, DB_LOCATION):
     """
     Scrapes parliament.gh and inputs new bill data into the database.
     """
+    new_bills = []
     is_new_bill = False
     new_bill_count = 0
 
@@ -126,20 +123,21 @@ def inputNewBills(PAGES, DB_LOCATION):
                 c.execute("SELECT 1 FROM bills WHERE bill_name = ? AND bill_date = ?", (bill_name, bill_date))
 
                 # If the bill is already in the database....
-                if c.fetchone():
+                if c.fetchone() or bill_name in DUPLICATE_BILLS:
                     pass
                 else:
                     is_new_bill = True
-                    mail_new_bill(DB_LOCATION, bill_name, page)
+                    # mail_new_bill(DB_LOCATION, bill_name, page)
+                    new_bills.append(bill_name)
                     new_bill_count = new_bill_count + 1
-                    c.execute("INSERT INTO bills VALUES (?,?,?)", (bill_name, bill_date, bill_writer))
+                    c.execute("INSERT INTO bills(bill_name, bill_date, bill_writer) VALUES (?,?,?)", (bill_name, bill_date, bill_writer))
                     c.execute(
                         "INSERT INTO bill_links (bill_search_link, bill_search_link1, bill_news_hits) VALUES (?, ?, ?)",
                         ("https://www.myjoyonline.com/?s="
                          + billToSearchTerm(bill_name),
-                         "https://http://citifmonline.com/?s=" + billToSearchTerm(bill_name),
+                         "https://citifmonline.com/?s=" + billToSearchTerm(bill_name),
                          findNewsCount(
-                            "https://http://citifmonline.com/?s=" + billToSearchTerm(bill_name),
+                            "https://citifmonline.com/?s=" + billToSearchTerm(bill_name),
                             "https://www.myjoyonline.com/?s=" + billToSearchTerm(bill_name))))
 
             # Soon, create a table to store the new bills. (URGENT)
@@ -186,48 +184,6 @@ def createDataJSON(db_location):
     print(data)
     return data
 
-def inputNewBills_IR(PAGES, DB_LOCATION):
-
-    is_new_bill = False
-    new_bill_count = 0
-
-    c = DB_LOCATION.cursor()
-
-
-    bill_names, bill_dates, bill_writers = getBillInfo_IR(PAGES)
-
-    for i in range(0, 58):
-        bill_name = bill_names[i]
-        bill_date = bill_dates[i]
-        bill_writer = bill_writers[i]
-
-        c.execute("SELECT 1 FROM bills WHERE bill_name = ? AND bill_date = ?", (bill_name, bill_date))
-        print(i)
-        # If the bill is already in the database....
-        if c.fetchone():
-            pass
-        else:
-            is_new_bill = True
-            print(bill_name, "not in DB")
-            mail_new_bill(bill_name, bill_date, 'ir.gov')
-            new_bill_count = new_bill_count + 1
-            c.execute("INSERT INTO bills (bill_name, bill_date, bill_writer) VALUES (?,?,?)", (bill_name, bill_date, bill_writer))
-            c.execute(
-                "INSERT INTO bill_links (bill_search_link, bill_search_link1, bill_news_hits) VALUES (?, ?, ?)",
-                ("https://www.myjoyonline.com/?s="
-                    + billToSearchTerm(bill_name),
-                "https://citifmonline.com/?s=" + billToSearchTerm(bill_name),
-                    findNewsCount(
-                    "https://citifmonline.com/?s=" + billToSearchTerm(bill_name),
-                    "https://www.myjoyonline.com/?s=" + billToSearchTerm(bill_name))))
-            DB_LOCATION.commit()
-
-            # Soon, create a table to store the new bills. (URGENT)
-
-
-    print(new_bill_count, "new bills.")
-
-    return is_new_bill, new_bill_count
 
 def dataUpdate(DB_LOCATION):
     c = DB_LOCATION.cursor()
@@ -248,7 +204,7 @@ def dataUpdate(DB_LOCATION):
     DB_LOCATION.close()
     return
 
-
+# inputNewBills(PAGES, DB_LOCATION)
 def startUpdater(DB_LOCATION, PAGES, webapp_context):
     def update(webapp_context):
         loop = asyncio.new_event_loop()
