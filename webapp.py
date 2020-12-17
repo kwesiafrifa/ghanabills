@@ -4,10 +4,16 @@ import json
 import sqlite3
 import waitress
 
-
 from updater import *
 from utils import *
 from flask import request, flash, url_for, redirect
+
+
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
 
 
 def run_webapp(DB_LOCATION, webapp_context):
@@ -15,6 +21,7 @@ def run_webapp(DB_LOCATION, webapp_context):
         __name__,
         static_url_path="",
         static_folder="static")
+    webapp.config["DEBUG"] = True
 
     @webapp.route("/")
     def index_bypass():
@@ -48,7 +55,6 @@ def run_webapp(DB_LOCATION, webapp_context):
 
     @webapp.route("/subscribe/count.json")
     def get_sub_count():
-
         c = DB_LOCATION.cursor()
         response = json.dumps(c.execute(
             "SELECT COUNT(*) FROM subscribers;"
@@ -59,7 +65,6 @@ def run_webapp(DB_LOCATION, webapp_context):
 
     @webapp.route("/subscribe/check/<email>")
     def check_sub_email(email):
-
         c = DB_LOCATION.cursor()
 
         response = json.dumps(c.execute(
@@ -72,7 +77,6 @@ def run_webapp(DB_LOCATION, webapp_context):
 
     @webapp.route("/subscribe/toggle/<email>")
     def toggle_sub_email(email):
-
         c = DB_LOCATION.cursor()
         in_subscribers = c.execute(
             "SELECT COUNT(*) FROM subscribers WHERE email = ?;",
@@ -87,7 +91,6 @@ def run_webapp(DB_LOCATION, webapp_context):
         response = ("Unsubscribed " if in_subscribers else "Subscribed ") \
                    + email + "."
         return flask.Response(response, mimetype="text/html")
-
 
     @webapp.route("/news_hits.json")
     def send_data1():
@@ -126,12 +129,3 @@ def run_webapp(DB_LOCATION, webapp_context):
             mimetype="application/json")
 
     waitress.serve(webapp, host='0.0.0.0', port=5000)
-
-
-
-
-
-
-
-
-
