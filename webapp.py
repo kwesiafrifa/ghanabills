@@ -59,9 +59,9 @@ def run_webapp(DB_LOCATION, webapp_context):
             name_list = name.split()
 
             if len(name_list) > 1:
-                for i in range(len(name_list)-1):
+                for n in name_list[0:-1]:
                     query += ' bill_name LIKE ? OR'
-                    to_filter.append('%' + name_list[i] + '%')
+                    to_filter.append('%' + n + '%')
 
             query += ' bill_name LIKE ? AND'
             to_filter.append('%' + name_list[-1] + '%')
@@ -71,22 +71,34 @@ def run_webapp(DB_LOCATION, webapp_context):
             author_list = author.split()
 
             if len(author_list) > 1:
-                for i in range(len(author_list)-1):
+                for a in author_list[0:-1]:
                     query += ' bill_writer LIKE ? OR'
-                    to_filter.append('%' + author_list[i] + '%')
+                    to_filter.append('%' + a + '%')
 
             query += ' bill_writer LIKE ? AND'
             to_filter.append('%' + author_list[-1] + '%')
+
         if news_mentions:
-            query += ' bill_news_hits=? AND'
-            to_filter.append(news_mentions)
+            news_mentions_list = range_validate(news_mentions, "news_hits")
+
+            if len(news_mentions_list) > 1:
+                for n in news_mentions_list[0:-1]:
+                    query += ' bill_news_hits LIKE ? OR'
+                    to_filter.append(n)
+
+            query += ' bill_news_hits LIKE ? AND'
+            to_filter.append(news_mentions_list[-1])
+
         if years:
-            years_list = range_validate(years)
+            years_list = range_validate(years, "year")
 
             if len(years_list) > 1:
-                for year in years_list[0:-1]
+                for y in years_list[0:-1]:
+                    query += ' bill_date LIKE ? OR'
+                    to_filter.append('%' + y + '%')
+
             query += ' bill_date LIKE ? AND'
-            to_filter.append(years)
+            to_filter.append('%' + years_list[-1] + '%')
 
         if not (author or name or news_mentions or years):
             return
