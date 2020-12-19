@@ -42,6 +42,43 @@ def run_webapp(DB_LOCATION, webapp_context):
                                         ON bills.id = bill_links.id;''').fetchall()
         return jsonify(all_bills)
 
+def api_filter():
+    query_parameters = request.args
+
+    author = query_parameters.get('author')
+    name = query_parameters.get('name')
+    news_mentions = query_parameters.get('news_mentions')
+    years = query_parameters.get('years')
+
+    query = "SELECT * FROM bills WHERE"
+    to_filter = []
+
+    if author:
+        author = standardize(author)
+        query += ' author=? AND'
+        to_filter.append(author)
+    if name:
+        name = standardize(name)
+        query += ' name=? AND'
+        to_filter.append(name)
+    if news_mentions:
+        query += ' news_mentions=? AND'
+        to_filter.append(news_mentions)
+    if years:
+        query += ' years=? AND'
+        to_filter.append(years)
+    if not (author or name or news_mentions or years):
+        return page_not_found(404)
+
+    query = query[:-4] + ';'
+
+    DB_LOCATION.row_factory = dict_factory
+    c = DB_LOCATION.cursor()
+
+    results = c.execute(query, to_filter).fetchall()
+
+    return jsonify(results)
+
 
 
     @webapp.route("/data.json")
