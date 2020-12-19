@@ -42,6 +42,20 @@ def run_webapp(DB_LOCATION, webapp_context):
                                         ON bills.id = bill_links.id ORDER BY bill_news_hits DESC;''').fetchall()
         return jsonify(all_bills)
 
+def api_filter():
+    query_parameters = request.args
+
+    author = query_parameters.get('author')
+    name = query_parameters.get('name')
+    news_mentions = query_parameters.get('news_mentions')
+    years = query_parameters.get('years')
+
+    query = "SELECT * FROM bills WHERE"
+    to_filter = []
+
+    if author:
+
+
 
 
     @webapp.route("/data.json")
