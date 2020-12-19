@@ -54,7 +54,30 @@ def api_filter():
     to_filter = []
 
     if author:
+        author = standardize(author)
+        query += ' author=? AND'
+        to_filter.append(author)
+    if name:
+        name = standardize(name)
+        query += ' name=? AND'
+        to_filter.append(name)
+    if news_mentions:
+        query += ' news_mentions=? AND'
+        to_filter.append(news_mentions)
+    if years:
+        query += ' years=? AND'
+        to_filter.append(years)
+    if not (author or name or news_mentions or years):
+        return page_not_found(404)
 
+    query = query[:-4] + ';'
+
+    DB_LOCATION.row_factory = dict_factory
+    c = DB_LOCATION.cursor()
+
+    results = c.execute(query, to_filter).fetchall()
+
+    return jsonify(results)
 
 
 
