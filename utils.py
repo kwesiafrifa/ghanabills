@@ -128,7 +128,7 @@ def standardize(input):
         if word in stop_words:
             inputs.remove(word)
 
-    return ''.join(inputs)
+    return ' '.join(inputs)
 
 
 def range_validate(num, type):
