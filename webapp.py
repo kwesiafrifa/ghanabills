@@ -56,12 +56,12 @@ def run_webapp(DB_LOCATION, webapp_context):
 
         if name:
             name = standardize(name)
-            query += ' bill_name LIKE %?% AND'
-            to_filter.append(name)
+            query += ' bill_name LIKE ? AND'
+            to_filter.append('%' + name + '%')
         if author:
             author = standardize(author)
-            query += ' bill_writer LIKE %?% AND'
-            to_filter.append(author)
+            query += ' bill_writer LIKE ? AND'
+            to_filter.append('%' + author + '%')
         if news_mentions:
             query += ' bill_news_hits=? AND'
             to_filter.append(news_mentions)
