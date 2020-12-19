@@ -56,12 +56,27 @@ def run_webapp(DB_LOCATION, webapp_context):
 
         if name:
             name = standardize(name)
+            name_list = name.split()
+
+            if len(name_list) > 1:
+                for i in range(len(name_list)-1):
+                    query += ' bill_name LIKE ? OR'
+                    to_filter.append('%' + name_list[i] + '%')
+
             query += ' bill_name LIKE ? AND'
-            to_filter.append('%' + name + '%')
+            to_filter.append('%' + name_list[-1] + '%')
+
         if author:
             author = standardize(author)
+            author_list = author.split()
+
+            if len(author_list) > 1:
+                for i in range(len(author_list)-1):
+                    query += ' bill_writer LIKE ? OR'
+                    to_filter.append('%' + author_list[i] + '%')
+
             query += ' bill_writer LIKE ? AND'
-            to_filter.append('%' + author + '%')
+            to_filter.append('%' + author_list[-1] + '%')
         if news_mentions:
             query += ' bill_news_hits=? AND'
             to_filter.append(news_mentions)
