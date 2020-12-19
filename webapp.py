@@ -81,8 +81,13 @@ def run_webapp(DB_LOCATION, webapp_context):
             query += ' bill_news_hits=? AND'
             to_filter.append(news_mentions)
         if years:
-            query += ' bil_date=? AND'
+            years_list = range_validate(years)
+
+            if len(years_list) > 1:
+                for year in years_list[0:-1]
+            query += ' bill_date LIKE ? AND'
             to_filter.append(years)
+
         if not (author or name or news_mentions or years):
             return
 
