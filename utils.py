@@ -137,7 +137,7 @@ def range_validate(num, type):
     if type == "year":
         trans_dict = {'START': 2000, 'END': 2021}
     elif type == "news_hits":
-        trans_dict = {'START': 0, 'END': 50}
+        trans_dict = {'START': 1, 'END': 50}
 
     try:
         num = int(num)
@@ -175,3 +175,5 @@ def range_validate(num, type):
 
         return final_array
 
+
+print(range_validate("START-END", "news_hits"))
