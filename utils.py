@@ -141,7 +141,7 @@ def range_validate(num, type):
 
     try:
         num = int(num)
-        return [num]
+        return [str(num)]
     except ValueError:
         nums = num.split("_")
 
