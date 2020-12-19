@@ -4,6 +4,7 @@ import re
 import datetime
 from datetime import datetime
 
+
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
@@ -44,7 +45,7 @@ def try_parsing_date(text):
     :param text: scraped date
     :return: formatted date
     """
-    for fmt in ('%Y-%m-%d','%Y-%m', '%Y'):
+    for fmt in ('%Y-%m-%d', '%Y-%m', '%Y'):
         try:
             return datetime.strptime(text, fmt)
         except ValueError:
@@ -71,6 +72,7 @@ def removeExtras(bill_name):
                 word_list.pop(word_list.index(word))
 
     return word_list
+
 
 def createHashtag(bill_name):
     """
@@ -110,20 +112,66 @@ def mail_validate(email):
 def print_with_datetime(s):
     print("[" + str(datetime.datetime.now()) + "]", s)
 
+
 def standardize(input):
     """
     removes stop words from input
     param input: str
     return: str
     """
-    stop_words = ["(Mrs.)", "(Mp)", "Mrs", "Mrs.", "(Miss)", "Mr", "Dr", "Mr.", "Dr.", "hon", "hon.", "for", "of", "and", "bill", "the", "on", "to", "a", "about", "an", "by"]
+    stop_words = ["(Mrs.)", "(Mp)", "Mrs", "Mrs.", "(Miss)", "Mr", "Dr", "Mr.", "Dr.", "hon", "hon.", "for", "of",
+                  "and", "bill", "the", "on", "to", "a", "about", "an", "by"]
 
     inputs = input.split()
-
 
     for word in inputs:
         if word in stop_words:
             inputs.remove(word)
 
     return ''.join(inputs)
+
+
+def range_validate(num, type):
+    final_array = []
+
+    if type == "year":
+        trans_dict = {'START': 2000, 'END': 2021}
+    elif type == "news_hits":
+        trans_dict = {'START': 0, 'END': 50}
+
+    try:
+        num = int(num)
+        return num
+    except ValueError:
+        nums = num.split(" ")
+
+        for num_range in nums:
+            start, end = None, None
+            num_range = num_range.split("-")
+
+            if isinstance(num_range[0], int) and isinstance(num_range[1], int):
+                for num in range(num_range[0], num_range[1] + 1):
+                    if str(num) in final_array:
+                        continue
+                    final_array.append(str(num))
+            else:
+
+                if num_range[0] == "START":
+                    start = trans_dict["START"]
+
+                if num_range[1] == "END":
+                    end = trans_dict["END"]
+
+                if not start:
+                    start = int(num_range[0])
+
+                if not end:
+                    end = int(num_range[1])
+
+                for num in range(start, end + 1):
+                    if str(num) in final_array:
+                        continue
+                    final_array.append(str(num))
+
+        return final_array
 
