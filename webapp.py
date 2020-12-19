@@ -1,4 +1,4 @@
-# Kwesi Afrifa, Jun-Jul 2020, kwesi@mit.edu
+# Kwesi Afrifa, Jun-Jul 2020, [kwesi, adanna]@mit.edu
 import flask
 import json
 import sqlite3
@@ -9,10 +9,9 @@ from utils import *
 from flask import request, jsonify
 
 
-
-
-
 app = flask.Flask(__name__)
+
+
 def run_webapp(DB_LOCATION, webapp_context):
     webapp = flask.Flask(
         __name__,
@@ -111,8 +110,6 @@ def run_webapp(DB_LOCATION, webapp_context):
         results = c.execute(query, to_filter).fetchall()
 
         return jsonify(results)
-
-
 
     @webapp.route("/data.json")
     def send_data():

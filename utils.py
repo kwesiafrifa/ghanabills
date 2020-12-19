@@ -141,9 +141,9 @@ def range_validate(num, type):
 
     try:
         num = int(num)
-        return num
+        return [num]
     except ValueError:
-        nums = num.split(" ")
+        nums = num.split("_")
 
         for num_range in nums:
             start, end = None, None
@@ -174,5 +174,7 @@ def range_validate(num, type):
                     final_array.append(str(num))
 
         return final_array
+
+
 
 
