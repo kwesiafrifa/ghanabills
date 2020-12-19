@@ -6,14 +6,11 @@ import waitress
 
 from updater import *
 from utils import *
-from flask import request, flash, url_for, redirect
+from flask import request, jsonify
 
 
-def dict_factory(cursor, row):
-    d = {}
-    for idx, col in enumerate(cursor.description):
-        d[col[0]] = row[idx]
-    return d
+
+
 
 app = flask.Flask(__name__)
 def run_webapp(DB_LOCATION, webapp_context):
@@ -27,6 +24,25 @@ def run_webapp(DB_LOCATION, webapp_context):
     @webapp.route("/")
     def index_bypass():
         return flask.render_template("index.html")
+
+    @webapp.route("/resources/bills/all", methods=['GET'])
+    def api_all():
+        DB_LOCATION.row_factory = dict_factory
+        c = DB_LOCATION.cursor()
+        all_bills = c.execute('''SELECT 
+                                        bills.bill_name, 
+                                        bills.bill_date, 
+                                        bills.bill_writer, 
+                                        bill_links.bill_search_link,
+                                        bill_links.bill_search_link1,
+                                        bill_links.bill_pdf_link,
+                                        bill_links.bill_news_hits
+                                        FROM bills
+                                        INNER JOIN bill_links
+                                        ON bills.id = bill_links.id ORDER BY bill_news_hits DESC;''').fetchall()
+        return jsonify(all_bills)
+
+
 
     @webapp.route("/data.json")
     def send_data():
@@ -132,4 +148,3 @@ def run_webapp(DB_LOCATION, webapp_context):
     waitress.serve(webapp, host='0.0.0.0', port=5000)
 
 
-# adanna
