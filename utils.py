@@ -176,4 +176,3 @@ def range_validate(num, type):
         return final_array
 
 
-print(range_validate("START-END", "news_hits"))
