@@ -109,3 +109,21 @@ def mail_validate(email):
 
 def print_with_datetime(s):
     print("[" + str(datetime.datetime.now()) + "]", s)
+
+def standardize(input, entry):
+    """
+    puts author name or bill name input into lowercase and splits it by spaces
+    makes the entry all lowercase
+    param input: str
+    param entry: str
+    return: bool
+    """
+    stop_words = ["for", "of", "and", "bill", "the", "on", "to", "a", "about", "an", "by"]
+
+    inputs = input.lower().split()
+    entry_list = entry.lower().split()
+
+    for word in inputs:
+        if word in entry_list and word not in stop_words:
+            return True
+    return False
