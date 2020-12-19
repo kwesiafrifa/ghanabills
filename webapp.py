@@ -15,13 +15,14 @@ def dict_factory(cursor, row):
         d[col[0]] = row[idx]
     return d
 
-
+app = flask.Flask(__name__)
 def run_webapp(DB_LOCATION, webapp_context):
     webapp = flask.Flask(
         __name__,
         static_url_path="",
         static_folder="static")
     webapp.config["DEBUG"] = True
+
 
     @webapp.route("/")
     def index_bypass():
@@ -129,3 +130,6 @@ def run_webapp(DB_LOCATION, webapp_context):
             mimetype="application/json")
 
     waitress.serve(webapp, host='0.0.0.0', port=5000)
+
+
+# adanna
