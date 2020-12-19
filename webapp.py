@@ -39,7 +39,7 @@ def run_webapp(DB_LOCATION, webapp_context):
                                         bill_links.bill_news_hits
                                         FROM bills
                                         INNER JOIN bill_links
-                                        ON bills.id = bill_links.id ORDER BY bill_news_hits DESC;''').fetchall()
+                                        ON bills.id = bill_links.id;''').fetchall()
         return jsonify(all_bills)
 
 
