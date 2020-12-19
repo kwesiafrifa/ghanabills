@@ -122,13 +122,13 @@ def standardize(input):
     stop_words = ["(Mrs.)", "(Mp)", "Mrs", "Mrs.", "(Miss)", "Mr", "Dr", "Mr.", "Dr.", "hon", "hon.", "for", "of",
                   "and", "bill", "the", "on", "to", "a", "about", "an", "by"]
 
-    inputs = input.split()
+    inputs = input.split('_')
 
     for word in inputs:
         if word in stop_words:
             inputs.remove(word)
 
-    return ''.join(inputs)
+    return ' '.join(inputs)
 
 
 def range_validate(num, type):
