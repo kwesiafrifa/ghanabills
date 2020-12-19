@@ -4,6 +4,13 @@ import re
 import datetime
 from datetime import datetime
 
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+
+
 def billToSearchTerm(bill_name):
     """
     converts bill name to internet search term, i.e: ghana bills to ghana+bills
