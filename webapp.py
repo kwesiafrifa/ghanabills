@@ -50,7 +50,7 @@ def run_webapp(DB_LOCATION, webapp_context):
         news_mentions = query_parameters.get('news_mentions')
         years = query_parameters.get('years')
 
-        query = "SELECT * FROM bills WHERE"
+        query = "SELECT * FROM bills INNER JOIN bill_links ON bills.id = bill_links.id WHERE"
         to_filter = []
 
         if name:
