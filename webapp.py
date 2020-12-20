@@ -122,6 +122,10 @@ def run_webapp(DB_LOCATION, webapp_context):
     def bills():
         return flask.render_template("bills.html")
 
+    @webapp.route("/documentation")
+    def docs():
+        return flask.render_template("documentation.html")
+
     @webapp.route("/about", methods=["POST", "GET"])
     def about():
         if request.method == 'POST':
