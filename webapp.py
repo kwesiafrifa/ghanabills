@@ -123,7 +123,7 @@ def run_webapp(DB_LOCATION, webapp_context):
         return flask.render_template("bills.html")
 
     @webapp.route("/documentation")
-    def docs():
+    def documentation():
         return flask.render_template("documentation.html")
 
     @webapp.route("/about", methods=["POST", "GET"])

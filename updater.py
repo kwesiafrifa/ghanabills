@@ -231,5 +231,5 @@ def startUpdater(DB_LOCATION, PAGES, webapp_context):
         args=(webapp_context,)
     )
     updater.daemon = True
-    updater.start()
+    #updater.start()
 
