@@ -43,5 +43,159 @@
 
     </nav>
     </div>
+
+    <div id="wrapper" class="col-6 container about" style="max-width: 75%">
+    <div class="main-content">
+        <p class="main-content-text"><h2 style="color: crimson; padding-top: 70px"> Documentation </h2>
+                <p style="font-size: 1.2em;">The <a href="/">ghanabills</a> API is for finding and collecting the nation's bills of parliament in an organized manner for use in research and technical development. </p>
+
+                    <h4 style="color: #2f2f2f">Possible Queries</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>
+                            What bills did Hon. Gloria Akuffo publish in 2015?</li>
+                            <li>
+
+                            What bills were covered the most from 2012-2017?
+                            </li>
+                            <li>
+                                Which bill writers and topics receive the most attention from the media?
+                            </li>
+                            <li>
+                                How many bills has Hon. Kwaku Ofori Asiamah published over his tenure?
+                            </li>
+
+                        </ul>
+                    </p>
+
+                    <h4 style="color: #2f2f2f">Request Options</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li><strong>Author.</strong>
+                            E.g: Request bills written by Matthew Opoku Prempeh.</li>
+                            <li>
+                                <strong>Bill Name.</strong>
+                            E.g: Request to see bills with the keyword "Legal".
+                            </li>
+                            <li>
+                                <strong>Number of news mentions.</strong>
+                                E.g: Request bills mentioned in the news (<a href="https://www.myjoyonline.com/">Joy FM</a> and <a href="https://citifmonline.com/">Citi FM's</a> pages) at least 10 times.
+                            </li>
+                            <li>
+                                <strong>Year(s) published</strong>
+                            E.g: Request bills published from 2018-2020
+                            </li>
+
+                        </ul>
+                    </p>
+
+                    <h4 style="color: #2f2f2f">Author</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>"author" is the key word used in the request</li>
+                            <li>
+                            When typing the name(s), use underscores "_" instead of spaces.
+                            </li>
+
+                            <li>
+                                Sample: <code>/resources/bills?author=Ken_Ofori-Atta_Matthew_Opoku</code>, which returns all bills written by Hon. Ken Ofori-Atta and Hon. Matthew Opoku Prempeh.
+                            </li>
+
+                        </ul>
+                    </p>
+
+                    <h4 style="color: #2f2f2f">Bill Name</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>"name" is the key word used in the request</li>
+                            <li>
+                            When typing the name(s), use underscores "_" instead of spaces.
+                            </li>
+
+                            <li>
+                                Sample: <code>/resources/bills?name=Legal_Profession_Bill</code>, which returns the Legal Profession Bill and other bills with titles including the keywords "legal" and "profession".
+                            </li>
+
+                        </ul>
+                    </p>
+
+                    <h4 style="color: #2f2f2f">Year(s) Published</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>"years" is the key word used in the request</li>
+                            <li>
+                                Options: put one year (e.g. 2015), put a range (e.g. <code>years=2010-2017</code>), range from earliest,  <code>START-2015</code>, range to latest <code>2004-END</code>, all in database <code>START-END</code>
+                            </li>
+
+                            <li>
+                                Multiple ranges can be attached (<code>years=2012-2014_2017-2020</code> returns bills from 2012-2014 and 2017-2020), and single years and ranges can also be combined. (i.e. <code>years=2014_2016-2020</code>)
+                            </li>
+
+                            <li>
+                                Sample: <code>/resources/bills?years=START-2013</code>, which returns the bills published from earliest date available through 2013.
+                            </li>
+
+                        </ul>
+                    </p>
+
+                    <h4 style="color: #2f2f2f">Number of News Mentions</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>"news_mentions" is the key word used in the request</li>
+                            <li>
+                                Options: put one number (e.g. <code>news_mentions=10</code>), put a range (e.g. <code>8-23</code>), range from smallest (<code>START-20</code>), range to latest: <code>5-END</code>, all in database <code>START-END</code>
+                            </li>
+
+                            <li>
+                                Multiple Ranges can be attached (2012-2014_2017-2020 returns 2012-2014 and 2017-2020)
+                            </li>
+                                Multiple Ranges can be attached (<code>5-8_20-END</code> returns 5-8 and 20+)
+                            <li>
+                                Sample: <code>/resources/bills?years=START-2013</code>, which returns the bills published from earliest date available through 2013.
+                            </li>
+
+                        </ul>
+                    </p>
+
+                    <h4 style="color: #2f2f2f">Combined Requests</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>"Combine the different search options with "&" symbol</li>
+                            <li>
+                                Sample: <code>/resources/bills?news_mentions=5-10_12-15&years=START-2019&name=legal&author=Gloria</code>, which returns any bills with mentions between 5-10 or 12-15, written as early as possible through 2019, containing the word legal in the name, and an author named Gloria
+                            </li>
+
+                            <li>
+                                To combine items within one search option (e.g. combine different author names), use the underscore symbol, i.e: <code>author=John_Peter_Ambrose_Yaw_Osei-Adutum</code>
+                            </li>
+
+                        </ul>
+                    </p>
+
+                     <h4 style="color: #2f2f2f">To View all Bills</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li><code>/resources/bills/all</code></li>
+
+                        </ul>
+                    </p>
+
+                     <h4 style="color: #2f2f2f">Tips</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>Spell words correctly to ensure all related bills are retrieved.</li>
+                            <li>Be specific; use as many of the 4 search options (author, bill name, news mentions, years) as possible to access a specific bill.</li>
+
+                        </ul>
+                    </p>
+
+
+
+
+
+
+    </div>
+</div>
+
 </body>
 </html>
