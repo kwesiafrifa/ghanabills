@@ -54,15 +54,17 @@ def run_webapp(DB_LOCATION, webapp_context):
         to_filter = []
 
         if name:
+
             name = standardize(name)
             name_list = name.split()
 
             if len(name_list) > 1:
+                query += "("
                 for n in name_list[0:-1]:
                     query += ' bill_name LIKE ? OR'
                     to_filter.append('%' + n + '%')
 
-            query += ' bill_name LIKE ? AND'
+            query += ' bill_name LIKE ?) AND'
             to_filter.append('%' + name_list[-1] + '%')
 
         if author:
@@ -70,33 +72,36 @@ def run_webapp(DB_LOCATION, webapp_context):
             author_list = author.split()
 
             if len(author_list) > 1:
+                query += "("
                 for a in author_list[0:-1]:
                     query += ' bill_writer LIKE ? OR'
                     to_filter.append('%' + a + '%')
 
-            query += ' bill_writer LIKE ? AND'
+            query += ' bill_writer LIKE ?) AND'
             to_filter.append('%' + author_list[-1] + '%')
 
         if news_mentions:
             news_mentions_list = range_validate(news_mentions, "news_hits")
 
             if len(news_mentions_list) > 1:
+                query += "("
                 for n in news_mentions_list[0:-1]:
                     query += ' bill_news_hits LIKE ? OR'
                     to_filter.append(n)
 
-            query += ' bill_news_hits LIKE ? AND'
+            query += ' bill_news_hits LIKE ?) AND'
             to_filter.append(news_mentions_list[-1])
 
         if years:
             years_list = range_validate(years, "year")
 
             if len(years_list) > 1:
+                query += "("
                 for y in years_list[0:-1]:
                     query += ' bill_date LIKE ? OR'
                     to_filter.append('%' + y + '%')
 
-            query += ' bill_date LIKE ? AND'
+            query += ' bill_date LIKE ?) AND'
             to_filter.append('%' + years_list[-1] + '%')
 
         if not (author or name or news_mentions or years):
@@ -108,7 +113,7 @@ def run_webapp(DB_LOCATION, webapp_context):
         c = DB_LOCATION.cursor()
 
         results = c.execute(query, to_filter).fetchall()
-
+        print(query)
         return jsonify(results)
 
     @webapp.route("/data.json")
