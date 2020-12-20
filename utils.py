@@ -1,4 +1,4 @@
-# Kwesi Afrifa, Jun-Jul 2020, kwesi@mit.edu
+# Kwesi Afrifa, Jun-Jul 2020, [kwesi,adanna]@mit.edu
 # A list of miscellaneous functions used within the main program.
 import re
 import datetime

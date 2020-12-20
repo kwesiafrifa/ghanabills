@@ -83,10 +83,10 @@ def run_webapp(DB_LOCATION, webapp_context):
             query += "("
             if len(news_mentions_list) > 1:
                 for n in news_mentions_list[0:-1]:
-                    query += ' bill_news_hits =? OR'
+                    query += ' bill_news_hits LIKE ? OR'
                     to_filter.append(n)
 
-            query += ' bill_news_hits =?) AND'
+            query += ' bill_news_hits LIKE ?) AND'
             to_filter.append(news_mentions_list[-1])
 
         if years:
@@ -94,10 +94,10 @@ def run_webapp(DB_LOCATION, webapp_context):
             query += "("
             if len(years_list) > 1:
                 for y in years_list[0:-1]:
-                    query += ' bill_date =? OR'
+                    query += ' bill_date LIKE ? OR'
                     to_filter.append(y)
 
-            query += ' bill_date =?) AND'
+            query += ' bill_date LIKE ?) AND'
             to_filter.append(years_list[-1])
 
         if not (author or name or news_mentions or years):
@@ -109,7 +109,6 @@ def run_webapp(DB_LOCATION, webapp_context):
         c = DB_LOCATION.cursor()
 
         results = c.execute(query, to_filter).fetchall()
-        print(query)
         return jsonify(results)
 
     @webapp.route("/data.json")
