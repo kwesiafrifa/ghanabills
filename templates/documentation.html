@@ -42,8 +42,219 @@
       </div>
 
     </nav>
+
     </div>
 
+<<<<<<< HEAD
+    <div id="wrapper" class="col-6 container about" style="max-width: 75%">
+    <div class="main-content">
+        <p class="main-content-text"><h2 style="color: crimson; padding-top: 70px"> Documentation </h2>
+                <p style="font-size: 1.2em;">The <a href="/">ghanabills</a> API is for finding and collecting the nation's bills of parliament in an organized manner for use in research and technical development. </p>
+
+                    <h4 style="color: #2f2f2f">Possible Queries</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>
+                            What bills did Hon. Gloria Akuffo publish in 2015?</li>
+                            <li>
+
+                            What bills were covered the most from 2012-2017?
+                            </li>
+                            <li>
+                                Which bill writers and topics receive the most attention from the media?
+                            </li>
+                            <li>
+                                How many bills has Hon. Kwaku Ofori Asiamah published over his tenure?
+                            </li>
+
+                        </ul>
+                    </p>
+
+                    <h4 style="color: #2f2f2f">Request Options</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li><strong>Author.</strong>
+                            E.g: Request bills written by Matthew Opoku Prempeh.</li>
+                            <li>
+                                <strong>Bill Name.</strong>
+                            E.g: Request to see bills with the keyword "Legal".
+                            </li>
+                            <li>
+                                <strong>Number of news mentions.</strong>
+                                E.g: Request bills mentioned in the news (<a href="https://www.myjoyonline.com/">Joy FM</a> and <a href="https://citifmonline.com/">Citi FM's</a> pages) at least 10 times.
+                            </li>
+                            <li>
+                                <strong>Year(s) published</strong>
+                            E.g: Request bills published from 2018-2020
+                            </li>
+
+                        </ul>
+                    </p>
+
+                    <h4 style="color: #2f2f2f">Author</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>"author" is the key word used in the request</li>
+                            <li>
+                            When typing the name(s), use underscores "_" instead of spaces.
+                            </li>
+
+                            <li>
+                                Sample: <code>/resources/bills?author=Ken_Ofori-Atta_Matthew_Opoku</code>, which returns all bills written by Hon. Ken Ofori-Atta and Hon. Matthew Opoku Prempeh.
+                            </li>
+
+                        </ul>
+                    </p>
+
+                    <h4 style="color: #2f2f2f">Bill Name</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>"name" is the key word used in the request</li>
+                            <li>
+                            When typing the name(s), use underscores "_" instead of spaces.
+                            </li>
+
+                            <li>
+                                Sample: <code>/resources/bills?name=Legal_Profession_Bill</code>, which returns the Legal Profession Bill and other bills with titles including the keywords "legal" and "profession".
+                            </li>
+
+                        </ul>
+                    </p>
+
+                    <h4 style="color: #2f2f2f">Year(s) Published</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>"years" is the key word used in the request</li>
+                            <li>
+                                Options: put one year (e.g. 2015), put a range (e.g. <code>years=2010-2017</code>), range from earliest,  <code>START-2015</code>, range to latest <code>2004-END</code>, all in database <code>START-END</code>
+                            </li>
+
+                            <li>
+                                Multiple ranges can be attached (<code>years=2012-2014_2017-2020</code> returns bills from 2012-2014 and 2017-2020), and single years and ranges can also be combined. (i.e. <code>years=2014_2016-2020</code>)
+                            </li>
+
+                            <li>
+                                Sample: <code>/resources/bills?years=START-2013</code>, which returns the bills published from earliest date available through 2013.
+                            </li>
+
+                        </ul>
+                    </p>
+
+                    <h4 style="color: #2f2f2f">Number of News Mentions</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>"news_mentions" is the key word used in the request</li>
+                            <li>
+                                Options: put one number (e.g. <code>news_mentions=10</code>), put a range (e.g. <code>8-23</code>), range from smallest (<code>START-20</code>), range to latest: <code>5-END</code>, all in database <code>START-END</code>
+                            </li>
+
+                            <li>
+                                Multiple Ranges can be attached (2012-2014_2017-2020 returns 2012-2014 and 2017-2020)
+                            </li>
+                                Multiple Ranges can be attached (<code>5-8_20-END</code> returns 5-8 and 20+)
+                            <li>
+                                Sample: <code>/resources/bills?years=START-2013</code>, which returns the bills published from earliest date available through 2013.
+                            </li>
+
+                        </ul>
+                    </p>
+
+                    <h4 style="color: #2f2f2f">Combined Requests</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>"Combine the different search options with "&" symbol</li>
+                            <li>
+                                Sample: <code>/resources/bills?news_mentions=5-10_12-15&years=START-2019&name=legal&author=Gloria</code>, which returns any bills with mentions between 5-10 or 12-15, written as early as possible through 2019, containing the word legal in the name, and an author named Gloria
+                            </li>
+
+                            <li>
+                                To combine items within one search option (e.g. combine different author names), use the underscore symbol, i.e: <code>author=John_Peter_Ambrose_Yaw_Osei-Adutum</code>
+                            </li>
+
+                        </ul>
+                    </p>
+
+                     <h4 style="color: #2f2f2f">To View all Bills</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li><code>/resources/bills/all</code></li>
+
+                        </ul>
+                    </p>
+
+                     <h4 style="color: #2f2f2f">Tips</h4>
+                    <p style="font-size: 1.0em">
+                        <ul>
+                            <li>Spell words correctly to ensure all related bills are retrieved.</li>
+                            <li>Be specific; use as many of the 4 search options (author, bill name, news mentions, years) as possible to access a specific bill.</li>
+
+                        </ul>
+                    </p>
+
+
+
+
+
+
+    </div>
+</div>
+=======
+
+    <div class="main-content-text">
+        <h1> Developer Tools </h1>
+    </div>
+>>>>>>> 1a21cc7cbee4a44211bdec500a64ef542afaf318
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/about.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <script type="module" src="../js/subscribe.js"></script>
+
+    <title>ghanabills | Documentation </title>
+</head>
+<body>
+    <div class="container">
+    <nav class="navbar fixed-top navbar-expand-sm navbar-dark" style="background-color: white">
+      <a class="navbar-brand" href="/" style="color: darkgoldenrod">ghanabills</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('bills') }}" style="color: darkgoldenrod">Search Bills <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('about') }}" style="color: darkgoldenrod">About</a>
+          </li>
+        </ul>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item ">
+                <a href="https://twitter.com/ghanabills?ref_src=twsrc%5Etfw" class="nav-link twitter-follow-button" data-show-count="false">Follow @ghanabills</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </li>
+        </ul>
+        <form class="subscribe form-row my-2 my-lg-0" style="padding-left: 10px">
+        <input class="form-control-sm mr-sm-2" type="search" placeholder="Type your email here." aria-label="Search">
+        <button type="submit" class="btn-sm btn-primary mb-2">Subscribe<span class="d">d</span></button>
+    </form>
+      </div>
+
+    </nav>
+
+    </div>
+
+<<<<<<< HEAD
     <div id="wrapper" class="col-6 container about" style="max-width: 75%">
     <div class="main-content">
         <p class="main-content-text"><h2 style="color: crimson; padding-top: 70px"> Documentation </h2>
