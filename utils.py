@@ -119,7 +119,7 @@ def standardize(input):
     param input: str
     return: str
     """
-    stop_words = ["(Mrs.)", "(Mp)", "Mrs", "Mrs.", "(Miss)", "Mr", "Dr", "Mr.", "Dr.", "hon", "hon.", "for", "of",
+    stop_words = ["&", "(Mrs.)", "(Mp)", "Mrs", "Mrs.", "(Miss)", "Mr", "Dr", "Mr.", "Dr.", "hon", "hon.", "for", "of",
                   "and", "bill", "the", "on", "to", "a", "about", "an", "by"]
 
     inputs = input.split('_')
