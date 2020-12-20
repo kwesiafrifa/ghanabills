@@ -57,9 +57,8 @@ def run_webapp(DB_LOCATION, webapp_context):
 
             name = standardize(name)
             name_list = name.split()
-
+            query += "("
             if len(name_list) > 1:
-                query += "("
                 for n in name_list[0:-1]:
                     query += ' bill_name LIKE ? OR'
                     to_filter.append('%' + n + '%')
@@ -70,9 +69,8 @@ def run_webapp(DB_LOCATION, webapp_context):
         if author:
             author = standardize(author)
             author_list = author.split()
-
+            query += "("
             if len(author_list) > 1:
-                query += "("
                 for a in author_list[0:-1]:
                     query += ' bill_writer LIKE ? OR'
                     to_filter.append('%' + a + '%')
@@ -82,9 +80,8 @@ def run_webapp(DB_LOCATION, webapp_context):
 
         if news_mentions:
             news_mentions_list = range_validate(news_mentions, "news_hits")
-
+            query += "("
             if len(news_mentions_list) > 1:
-                query += "("
                 for n in news_mentions_list[0:-1]:
                     query += ' bill_news_hits LIKE ? OR'
                     to_filter.append(n)
@@ -94,9 +91,8 @@ def run_webapp(DB_LOCATION, webapp_context):
 
         if years:
             years_list = range_validate(years, "year")
-
+            query += "("
             if len(years_list) > 1:
-                query += "("
                 for y in years_list[0:-1]:
                     query += ' bill_date LIKE ? OR'
                     to_filter.append('%' + y + '%')
