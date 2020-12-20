@@ -192,6 +192,3 @@ def range_validate(num, type):
                     final_array.append(str(num))
 
         return final_array
-
-
-print(range_validate("2012_2018-2020_2015_2016-2017", "news_hits"))
