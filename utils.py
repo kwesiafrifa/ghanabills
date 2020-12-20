@@ -140,14 +140,32 @@ def range_validate(num, type):
         trans_dict = {'START': 1, 'END': 50}
 
     try:
-        num = int(num)
-        return [num]
+        if "_" not in num:
+            num = int(num)
+            return [str(num)]
+        else:
+            nums = num.split("_")
+            for arg in nums:
+                if "-" in arg:
+                    final_array += range_validate(arg, type)
+                else:
+                    final_array.append(arg)
+            return final_array
     except ValueError:
         nums = num.split("_")
 
         for num_range in nums:
             start, end = None, None
-            num_range = num_range.split("-")
+
+            if "-" in num_range:
+                num_range = num_range.split("-")
+            else:
+                try:
+                    num_range = int(num_range)
+                    final_array.append(str(num_range))
+                    continue
+                except ValueError:
+                    pass
 
             if isinstance(num_range[0], int) and isinstance(num_range[1], int):
                 for num in range(num_range[0], num_range[1] + 1):
@@ -174,7 +192,3 @@ def range_validate(num, type):
                     final_array.append(str(num))
 
         return final_array
-
-
-
-
