@@ -54,7 +54,6 @@ def run_webapp(DB_LOCATION, webapp_context):
         to_filter = []
 
         if name:
-
             name = standardize(name)
             name_list = name.split()
             query += "("

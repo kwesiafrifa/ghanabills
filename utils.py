@@ -132,6 +132,12 @@ def standardize(input):
 
 
 def range_validate(num, type):
+    '''
+    Converts user's year request to list of years, i.e. "2016_2018-2020" to ["2016", "2018", "2019", "2020"]
+    :param num: int
+    :param type: str
+    :return: list
+    '''
     final_array = []
 
     if type == "year":
