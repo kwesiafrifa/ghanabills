@@ -1,4 +1,4 @@
-# Kwesi Afrifa, Jun-Jul 2020, [kwesi, adanna]@mit.edu
+# Kwesi Afrifa, Adanna Abraham-Igwe, Jun-Dec. 2020, [kwesi, adanna]@mit.edu
 import flask
 import json
 import sqlite3
